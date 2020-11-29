@@ -14,6 +14,7 @@ export const addToCart = (productId, qty) =>async (dispatch, getState) =>{
             qty
         }
     })
-
+    //to save cartItems even after refreshing page save it to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
