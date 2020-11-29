@@ -1,7 +1,8 @@
-import express from "express"
-import dotenv from "dotenv"
-import connectDB from "./config/db.js"
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
 import productRouter from "./routes/productRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 //load env variables
 dotenv.config({ path: "./config/config.env" });
@@ -9,12 +10,16 @@ dotenv.config({ path: "./config/config.env" });
 //connect to database
 connectDB();
 
-const app = express()
+const app = express();
 
 //route
-app.use('/api/products',productRouter)
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
-const port= process.env.PORT || 4000
-app.listen(port, () =>{
-    console.log(`server running at port ${port}`)
-})
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`server running at port ${port}`);
+});
