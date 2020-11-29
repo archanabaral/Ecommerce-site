@@ -12,13 +12,18 @@ connectDB();
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended:true }))
+
 //route
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
+  next();
 });
+// eslint-disable-next-line no-undef
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`server running at port ${port}`);
