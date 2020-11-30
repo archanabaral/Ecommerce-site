@@ -23,6 +23,7 @@ userRouter.get(
 );
 userRouter.post(
   "/signin",
+
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -42,20 +43,42 @@ userRouter.post(
 );
 userRouter.post(
   "/register",
+
   expressAsyncHandler(async (req, res) => {
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    });
-    const createUser = await user.save();
-    res.send({
-      _id: createUser._id,
-      name: createUser.name,
-      email: createUser.email,
-      isAdmin: createUser.isAdmin,
-      token: generateToken(createUser),
-    });
+    try {
+      let user = await User.findOne({ email: req.body.email });
+
+      if (!req.body.email || !req.body.password || !req.body.name) {
+        return res.status(400).json({
+          msg: "please fill all the required fields",
+        });
+      }
+      if(req.body.password.length < 6){
+        return res.status(400).json({
+          msg: "Please enter password with 6 or more character",
+        });
+      }
+      if (user) {
+        return res.status(400).json({
+          msg: `User with this email ${req.body.email} already exists`,
+        });
+      }
+      user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+      });
+      const createUser = await user.save();
+      res.send({
+        _id: createUser._id,
+        name: createUser.name,
+        email: createUser.email,
+        isAdmin: createUser.isAdmin,
+        token: generateToken(createUser),
+      });
+    } catch (err) {
+      res.status(500).send("server error");
+    }
   })
 );
 
