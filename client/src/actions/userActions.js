@@ -9,10 +9,14 @@ import {
   USER_SIGNOUT,
 } from "../constants/userConstants";
 
-export const register = (name,email, password) => async (dispatch) => {
-  dispatch({ type: USER_REGISTER_REQUEST, payload: { name,email, password } });
+export const register = (name, email, password) => async (dispatch) => {
+  dispatch({ type: USER_REGISTER_REQUEST, payload: { name, email, password } });
   try {
-    const { data } = await axios.post("/api/users/register", { name,email, password });
+    const { data } = await axios.post("/api/users/register", {
+      name,
+      email,
+      password,
+    });
 
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
 
@@ -23,10 +27,7 @@ export const register = (name,email, password) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: USER_REGISTER_FAIL,
-      payload:
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message,
+      payload: err.response.data.msg,
     });
   }
 };
