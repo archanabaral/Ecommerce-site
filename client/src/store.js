@@ -24,6 +24,7 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null,
   },
+  paymentMethod: "eSewa",
 };
 
 const reducer = combineReducers({
