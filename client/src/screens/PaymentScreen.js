@@ -6,7 +6,7 @@ import { savePaymentMethod } from "../actions/cartActions";
 export default function PaymentScreen(props) {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
-  const [paymentMethod, setPaymentMethod] = useState("eSewa");
+  const [paymentMethod, setPaymentMethod] = useState("payPal");
   const dispatch = useDispatch();
 
   if (!shippingAddress.address) {
@@ -29,14 +29,14 @@ export default function PaymentScreen(props) {
           <div>
             <input
               type="radio"
-              id="eSewa"
-              value="eSewa"
+              id="payPal"
+              value="payPal"
               name="paymentMethod"
               required
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></input>
-            <label htmlFor="eSewa">eSewa</label>
+            <label htmlFor="payPal">PayPal</label>
           </div>
         </div>
         <div>
