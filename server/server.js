@@ -21,6 +21,11 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
+app.get("/api/config/paypal", async (req, res) => {
+  // eslint-disable-next-line no-undef
+  res.send(process.env.PAYPAL_CLIENT_ID);
+});
+
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
   next();
