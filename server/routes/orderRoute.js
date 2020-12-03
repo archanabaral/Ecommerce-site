@@ -1,7 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import { isAuth } from "../utils.js";
-import Order from "../models/orderModel.js"
+import Order from "../models/orderModel.js";
 
 const orderRouter = express.Router();
 
@@ -30,4 +30,18 @@ orderRouter.post(
     }
   })
 );
+
+orderRouter.get(
+  "/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ msg: "Order Not Found" });
+    }
+  })
+);
+
 export default orderRouter;
