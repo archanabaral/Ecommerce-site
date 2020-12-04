@@ -53,7 +53,7 @@ userRouter.post(
           msg: "please fill all the required fields",
         });
       }
-      if(req.body.password.length < 6){
+      if (req.body.password.length < 6) {
         return res.status(400).json({
           msg: "Please enter password with 6 or more character",
         });
@@ -78,6 +78,18 @@ userRouter.post(
       });
     } catch (err) {
       res.status(500).send("server error");
+    }
+  })
+);
+
+userRouter.get(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ msg: "User Not Found" });
     }
   })
 );
